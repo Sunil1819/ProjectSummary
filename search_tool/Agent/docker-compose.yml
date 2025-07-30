@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  qa-agent:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - MAX_RESULTS=${MAX_RESULTS:-10}
+      - SEARCH_DEPTH=${SEARCH_DEPTH:-basic}
+      - MAX_CONTENT_SIZE=${MAX_CONTENT_SIZE:-10000}
+      - MAX_SCRAPE_LENGTH=${MAX_SCRAPE_LENGTH:-20000}
+      - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.1}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-3000}
+      - REQUEST_TIMEOUT=${REQUEST_TIMEOUT:-30}
+      - LLM_TIMEOUT=${LLM_TIMEOUT:-60}
+    volumes:
+      - ./sites_data.csv:/app/sites_data.csv:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a simple web interface (uncomment if needed)
+  # web-ui:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - qa-agent
+  #   restart: unless-stopped 
