@@ -1,0 +1,6 @@
+title: "RAG Agent Corpus Access"
+description: "Allows a service account to query RAG corpora."
+stage: "GA"
+includedPermissions:
+- aiplatform.ragCorpora.get
+- aiplatform.ragCorpora.query
