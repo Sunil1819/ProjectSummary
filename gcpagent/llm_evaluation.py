@@ -3,7 +3,7 @@ from google.oauth2 import service_account
 import vertexai
 from vertexai.preview.language_models import TextGenerationModel, EvaluationTextClassificationSpec
 CONFIG = {
-    "service_account_json": "C:\\Users\\Sunil\\Downloads\\GCP_creds.json",
+    "service_account_json": "Json key path",
     "project_id": "gcp-agents",
     "location": "us-central1",
     "model_name": "text-bison@001",
